@@ -50,6 +50,15 @@ int main(){
     int frames = 30;
     int subpage;
     static float mlx90640To[768];
+
+    printf(ANSI_COLOR_WHITE ">= 38 ");
+    printf(ANSI_COLOR_RED ">= 37 " ANSI_COLOR_RESET);
+    printf(ANSI_COLOR_YELLOW ">= 36 " ANSI_COLOR_RESET);
+    printf(ANSI_COLOR_GREEN ">= 35 " ANSI_COLOR_RESET);
+    printf(ANSI_COLOR_CYAN ">= 34 " ANSI_COLOR_RESET);
+    printf(ANSI_COLOR_BLUE ">= 33 " ANSI_COLOR_RESET);
+    std::cout << std::endl;
+
     while (1){
         state = !state;
         //printf("State: %d \n", state);
@@ -66,35 +75,40 @@ int main(){
         //MLX90640_SetSubPage(MLX_I2C_ADDR,!subpage);
 
         for(int x = 0; x < 32; x++){
+	    float lineTotal = 0;
             for(int y = 0; y < 24; y++){
                 //std::cout << image[32 * y + x] << ",";
                 float val = mlx90640To[32 * (23-y) + x];
                 if(val > 99.99) val = 99.99;
-                if(val > 32.0){
-                    printf(ANSI_COLOR_MAGENTA FMT_STRING ANSI_COLOR_RESET, val);
-                }
-                else if(val > 29.0){
-                    printf(ANSI_COLOR_RED FMT_STRING ANSI_COLOR_RESET, val);
-                }
-                else if (val > 26.0){
-                    printf(ANSI_COLOR_YELLOW FMT_STRING ANSI_COLOR_YELLOW, val);
-                }
-                else if ( val > 20.0 ){
-                    printf(ANSI_COLOR_NONE FMT_STRING ANSI_COLOR_RESET, val);
-                }
-                else if (val > 17.0) {
-                    printf(ANSI_COLOR_GREEN FMT_STRING ANSI_COLOR_RESET, val);
-                }
-                else if (val > 10.0) {
-                    printf(ANSI_COLOR_CYAN FMT_STRING ANSI_COLOR_RESET, val);
-                }
-                else if (val < 0) {
+                if(val >= 39.0){
                     printf(ANSI_COLOR_WHITE FMT_STRING ANSI_COLOR_RESET, val);
                 }
-                else {
-                    printf(ANSI_COLOR_BLUE FMT_STRING ANSI_COLOR_RESET, val);
+		else if(val >= 38.0){
+                    printf(ANSI_COLOR_MAGENTA FMT_STRING ANSI_COLOR_RESET, val);
                 }
+                else if(val > 37.0){
+                    printf(ANSI_COLOR_RED FMT_STRING ANSI_COLOR_RESET, val);
+                }
+                else if (val > 36.0){
+                    printf(ANSI_COLOR_YELLOW FMT_STRING ANSI_COLOR_YELLOW, val);
+                }
+                else if (val > 35.0) {
+                    printf(ANSI_COLOR_GREEN FMT_STRING ANSI_COLOR_RESET, val);
+                }
+                else if (val > 34.0) {
+                    printf(ANSI_COLOR_CYAN FMT_STRING ANSI_COLOR_RESET, val);
+                }
+                else if (val > 33.0) {
+                    printf(ANSI_COLOR_BLUE FMT_STRING ANSI_COLOR_RESET, val);
+		}
+                else {
+                    printf(ANSI_COLOR_NONE FMT_STRING ANSI_COLOR_RESET, val);
+                }
+		if(y >= 4 && y < 20)
+		    lineTotal += val;
             }
+	    // printf (" av: %f", lineTotal/24.0);
+	    printf (" av: %f", lineTotal/16.0);
             std::cout << std::endl;
         }
         //std::this_thread::sleep_for(std::chrono::milliseconds(20));

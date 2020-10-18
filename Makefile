@@ -5,7 +5,7 @@ SRC_DIR = examples/src/
 BUILD_DIR = examples/
 LIB_DIR = $(SRC_DIR)lib/
 
-examples = test rawrgb step fbuf interp video hotspot sdlscale 
+examples = testgf test rawrgb step fbuf interp video hotspot sdlscale 
 examples_objects = $(addsuffix .o,$(addprefix $(SRC_DIR), $(examples)))
 examples_output = $(addprefix $(BUILD_DIR), $(examples))
 
@@ -43,6 +43,9 @@ $(BUILD_DIR)sdlscale: $(SRC_DIR)sdlscale.o libMLX90640_API.a
 	$(CXX) -L/home/pi/mlx90640-library $^ -o $@ $(I2C_LIBS) `sdl2-config --libs`
 
 $(BUILD_DIR)hotspot: $(SRC_DIR)hotspot.o $(LIB_DIR)fb.o libMLX90640_API.a
+	$(CXX) -L/home/pi/mlx90640-library $^ -o $@ $(I2C_LIBS)
+
+$(BUILD_DIR)testgf: $(SRC_DIR)testgf.o libMLX90640_API.a
 	$(CXX) -L/home/pi/mlx90640-library $^ -o $@ $(I2C_LIBS)
 
 $(BUILD_DIR)test: $(SRC_DIR)test.o libMLX90640_API.a
